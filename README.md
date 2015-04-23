@@ -1,8 +1,8 @@
 # Marionette CompositeView demo
 
-Started with a question from a user on marionettejs gitter channel. Fix one thing on jsfiddle with him, but notice a lot of miss usage of Marionette & Backbone.
+Started because of a question from a user on [marionettejs gitter channel)(https://gitter.im/marionettejs/backbone.marionette). Fixed one thing on jsfiddle with him, but noticed a lot of missusage of Marionette & Backbone.
 
-So I hope this example will help a lot of people to understand CompositeView working as a tree / leaf helper.
+So I hope this example will help a lot of people to understand CompositeView working as a tree / leaf helper but also app, rootView, regions, ...
 
 # Install & run
 
