@@ -1,0 +1,16 @@
+{
+  "name": "composite",
+  "version": "1.0.0",
+  "description": "Simple Marionette.CompositeView example",
+  "authors": [
+    "Jérôme Steunou <jerome.steunou@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "bower_components"
+  ],
+  "dependencies": {
+    "backbone.marionette": "~2.4.1"
+  }
+}

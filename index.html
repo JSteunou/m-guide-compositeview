@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script type="text/template" id="tpl">
+    <span><%=name%> - <%=value%></span>
+    <ul></ul>
+</script>
+
+<script type="text/javascript" src="bower_components/jquery/dist/jquery.js"></script>
+<script type="text/javascript" src="bower_components/underscore/underscore.js"></script>
+<script type="text/javascript" src="bower_components/backbone/backbone.js"></script>
+<script type="text/javascript" src="bower_components/backbone.marionette/lib/backbone.marionette.js"></script>
+
+
+<script type="text/javascript">
+window.addEventListener('load', function load() {
+
+    var Data = [
+        {
+            name: '1',
+            value: '1',
+            children: []
+        }, {
+            name: '2',
+            value: '2',
+            children: [
+                {
+                    name: '3',
+                    value: '3',
+                    children: []
+                }, {
+                    name: '4',
+                    value: '4',
+                    children: [
+                        {
+                            name: '5',
+                            value: '5'
+                        },
+                        {
+                            name: '5',
+                            value: '5'
+                        }
+                    ]
+                }
+            ]
+        }, {
+            name: '6',
+            value: '6',
+            children: [
+                {
+                    name: '7',
+                    value: '7',
+                    children: []
+                }
+            ]
+        }
+    ];
+
+    var Model = Backbone.Model.extend({
+        defaults: {
+            name: 'new',
+            value: '',
+            // children: []
+            //
+            // // never do that !!!!! Array and Object are given by reference
+            //
+            // use function that will return an Object
+            // if you really need Array or Object inside `defaults`
+            // default: function() {
+            //     return {
+            //         name: 'new',
+            //         value: '',
+            //         children: [1, 2, 3]
+            //     }
+            // }
+        },
+
+        // @see http://backbonejs.org/#Model-parse
+        parse: function(attrs) {
+            // this will recursively create children
+            attrs.children = new Collection(attrs.children || [], {parse: true});
+            return attrs;
+        }
+    });
+
+    var Collection = Backbone.Collection.extend({
+        model: Model
+    });
+
+    var TreeView = Backbone.Marionette.CompositeView.extend({
+        template: '#tpl',
+        tagName: 'li',
+        // default childView of a CompositeView is itself
+        childViewContainer: 'ul',
+
+        initialize: function() {
+            if (this.model.get('children')) {
+                this.collection = this.model.get('children');
+            }
+        }
+    });
+
+    var TreeRoot = Backbone.Marionette.CollectionView.extend({
+        tagName: 'ul',
+        childView: TreeView
+    });
+
+    var RootView = Marionette.LayoutView.extend({
+        el: 'body',
+        template: false,
+        regions: {
+            main: '#app'
+        },
+
+        onRender: function() {
+            var mainView = new TreeRoot({collection: new Collection(Data, {parse: true})});
+            this.showChildView('main', mainView);
+        }
+
+    });
+
+    var MyApp = Backbone.Marionette.Application.extend({
+
+        onStart: function() {
+            this.rootView = new RootView();
+            this.rootView.render();
+        }
+
+    });
+
+    var myApp = new MyApp();
+    myApp.start();
+
+});
+
+</script>
+
+
+</body>
+</html>
